@@ -1,0 +1,166 @@
+<html>
+    <head>
+        <base href="file:///C:/Users/titusstudios/Desktop/dev/furrnace/">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="modules/global/css/furrnace.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+        <script src="modules/global/js/jquery.min.js"></script>
+        <script type="text/javascript" src="modules/global/js/yaml.min.js"></script>
+    </head>
+    <body>
+        <button class="buttonreturn" onclick="window.location.reload()">Return</button>
+        <button class="buttoncontinue" onclick="pageFinish()">Finish</button>
+        <div class="header">
+            <div class="headertext">
+                <h1 contenteditable="true" id="title" onpaste="plainText(event)" onkeyup="updateCardData()">Name</h1>
+                <p contenteditable="true" id="desc" onpaste="plainText(event)" onkeyup="updateCardData()">Enter a description here.</p>
+            </div>
+        </div>
+
+        <div class="importpage" id="importpage">
+            <div class="importpage-container">
+                <h1>Import project</h1>
+                <div class="importpage-precode">
+                    <code contenteditable="true" id="codeimmport" onpaste="plainText(event)"></code>
+                </div>
+                <p onclick="importYAML()">Import</p>
+                <p onclick="newProject()">Or start a new project</p>
+            </div>
+        </div>
+
+        <div class="theme-selector" id="themeselector">
+            <div class="theme-selector-container">
+                <h1>Select a theme</h1>
+                <div class="theme-wrapper" onclick="setTheme('theme_light')">
+                    <img src="modules/color_modes/light_preview.png">
+                    <input type="radio" id="theme_light" name="theme" value="default-light" onclick="setTheme('theme_light',true)" checked>
+                    <p>Default light</p>
+                </div>
+                <div class="theme-wrapper" onclick="setTheme('theme_dark')">
+                    <img src="modules/color_modes/dark_preview.png">
+                    <input type="radio" id="theme_dark" name="theme" value="default-dark" onclick="setTheme('theme_dark',true)">
+                    <p>Default dark</p>
+                </div>
+                <button class="theme-buttoncontinue" onclick="setThemeFinish()">Continue</button>
+            </div>
+        </div> 
+
+        <div class="panel-container" id="panelcontainer">
+            <button class="editor-panel-add" onclick="addColumn()">
+                <i class="fas fa-plus"></i> Add column
+            </button>
+        </div>
+
+        <div class="finish-page" id="finishpage">
+            <div class="finish-page-container" id="domaincontainer">
+                <h1>Give your page a url</h1>
+                <div class="finish-page-domain" id="domainbox">
+                    <p id="domain">furrnace.titusstudios.net/</p>
+                    <p id="setdomain" contenteditable="true" onpaste="plainText(event)" onkeydown="domainCharCheck()">furrnace</p>
+                </div>
+                <p id="domainalert"></p>
+            </div>
+
+            <div class="finish-page-code" id="finishcode">
+                <h1>Code output</h1>
+                <div class="finish-page-precode">
+                    <code id="codeoutput"></code>
+                </div>
+                <p>Created using <a href="https://furrnace.titusstudios.net/">furrnace.</a></p>
+            </div>
+        </div>
+
+        <div class="cardedit popin" id="cardedit">
+            <div class="cardedit-controls">
+                <i class="fas fa-times" onclick="close_editCard()"></i>
+                <p>Edit Card</p>
+            </div>
+            <div class="cardedit-container">
+                <div class="cardedit-switchwrapper">
+                    <label class="switch">
+                        <input type="checkbox" id="edit_enablecard" onclick="editCard()" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <p>Enable Card</p>
+                </div>
+                <div class="cardedit-switchwrapper">
+                    <label class="switch">
+                        <input type="checkbox" id="edit_image" onclick="editCard()" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <p>Card Image</p>
+                </div>
+                <div class="cardedit-switchwrapper">
+                    <label class="switch">
+                        <input type="checkbox" id="edit_imagefill" onclick="editCard()">
+                        <span class="slider round"></span>
+                    </label>
+                    <p>Image Fill Card</p>
+                </div>
+                <div class="cardedit-switchwrapper">
+                    <label class="switch">
+                        <input type="checkbox" id="edit_title" onclick="editCard()" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <p>Title</p>
+                </div>
+                <div class="cardedit-switchwrapper">
+                    <label class="switch">
+                        <input type="checkbox" id="edit_price" onclick="editCard()" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <p>Price</p>
+                </div>
+                <div class="cardedit-switchwrapper">
+                    <label class="switch">
+                        <input type="checkbox" id="edit_blurb" onclick="editCard()" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <p>Blurb</p>
+                </div>
+                <div class="cardedit-switchwrapper">
+                    <label class="switch">
+                        <input type="checkbox" id="edit_customsize" onclick="editCard()">
+                        <span class="slider round"></span>
+                    </label>
+                    <p>Custom Size</p>
+                </div>
+                <div class="cardedit-inputwrapper">
+                    <p id="cardwidth" contenteditable="true" onpaste="plainText(event)" onkeyup="checkWidth()"></p>
+                    <p id="cardwh">x</p>
+                    <p id="cardheight" contenteditable="true" onpaste="plainText(event)" onkeyup="checkHeight()"></p>
+                </div>
+                <div class="cardedit-inputwrapper">
+                    <p>Image Url</p>
+                    <p id="urlpopup" contenteditable="true" onpaste="plainText(event)"></p>
+                </div>
+                <div class="cardedit-inputwrapper">
+                    <p>Card Color (hex)</p>
+                    <p id="colorinput" contenteditable="true" onpaste="plainText(event)"></p>
+                </div>
+                <button class="cardeditbutton cardapplychanges" onclick="editCard(undefined,true)">Apply Changes</button>
+            </div>
+        </div>
+
+        <div class="deletepopup popin" id="deleteconfirm">
+            <div class="delete-controls">
+                <p>Confirm Deletion</p>
+            </div>
+            <div class="delete-container">
+                <button class="deletebutton deletecancel" onclick="deleteCancel()">Cancel</button>
+                <button class="deletebutton deleteconfirm" onclick="deleteConfirm()">Delete</button>
+            </div>
+        </div>
+
+        <div class="loader" id="loader">
+            <div class="loader-container" id="loader-container">
+                <div class="loadingbar" id="loadingbar"></div>
+            </div>
+        </div>
+
+        <script src="modules/editor/furrnace.js"></script>
+    </body>
+</html>
